@@ -103,13 +103,21 @@ metadata {
                 [value: 96, color: "#bc2323"]
             ]
         }
-        standardTile("contact", "device.contact", width: 1, height: 1) {
-			state("closed", label:'${name}', icon:"st.contact.contact.closed", backgroundColor:"#79b821", action: "open")
-			state("open", label:'${name}', icon:"st.contact.contact.open", backgroundColor:"#ffa81e", action: "close")
+        standardTile("contact", "device.contact1", width: 1, height: 1) {
+			state("closed", label:'Dog_Window', icon:"st.contact.contact.closed", backgroundColor:"#79b821")
+			state("open", label:'Dog_Window', icon:"st.contact.contact.open", backgroundColor:"#ffa81e")
 		}
-        standardTile("contact1", "device.contact1", width: 1, height: 1) {
-			state("closed", label:'${name}12', icon:"st.contact.contact.closed", backgroundColor:"#79b821")
-			state("open", label:'${name}12', icon:"st.contact.contact.open", backgroundColor:"#ffa81e")
+        standardTile("contact1", "device.contact2", width: 1, height: 1) {
+			state("closed", label:'Workout_Window', icon:"st.contact.contact.closed", backgroundColor:"#79b821")
+			state("open", label:'Workout_Window', icon:"st.contact.contact.open", backgroundColor:"#ffa81e")
+		}
+        standardTile("contact2", "device.contact3", width: 1, height: 1) {
+			state("closed", label:'Food_Window', icon:"st.contact.contact.closed", backgroundColor:"#79b821")
+			state("open", label:'Food_Window', icon:"st.contact.contact.open", backgroundColor:"#ffa81e")
+		}
+        standardTile("contact3", "device.contact4", width: 1, height: 1) {
+			state("closed", label:'Ping_Window', icon:"st.contact.contact.closed", backgroundColor:"#79b821")
+			state("open", label:'Ping_Window', icon:"st.contact.contact.open", backgroundColor:"#ffa81e")
 		}
         standardTile("restart", "device.restart", inactiveLabel: false, decoration: "flat") {
         	state "default", action:"restart", label: "Restart", displayName: "Restart"
@@ -118,7 +126,7 @@ metadata {
         	state "default", action:"refresh.refresh", icon: "st.secondary.refresh"
         }
         main "button"
-        details(["button", "temperature", "cpuPercentage", "memory" , "diskUsage", "contact", "contact1", "restart", "refresh"])
+        details(["button", "temperature", "cpuPercentage", "memory" , "diskUsage", "contact", "contact1", "contact2", "contact3", "restart", "refresh"])
     }
 }
 
@@ -166,24 +174,44 @@ def parse(String description) {
         sendEvent(name: "diskUsage", value: result.disk_usage)
     }
   
-    if (result.containsKey("gpio_value_17")) {
-    	log.debug "gpio_value_17: ${result.gpio_value_17.toDouble().round()}"
-        if (result.gpio_value_17.contains("0")){
-        	log.debug "gpio_value_17: open"
-            sendEvent(name: "contact", value: "open")
-        } else {
-        	log.debug "gpio_value_17: closed"
-           sendEvent(name: "contact", value: "closed")
-        }
-    }
-    if (result.containsKey("gpio_value_18")) {
-    	log.debug "gpio_value_18: ${result.gpio_value_18.toDouble().round()}"
-        if (result.gpio_value_18.contains("0")){
-        	log.debug "gpio_value_18: open"
+    if (result.containsKey("dogWindow")) {
+    	log.debug "dogWindow: ${result.dogWindow.toDouble().round()}"
+        if (result.dogWindow.contains("0")){
+        	log.debug "dogWindow: open"
             sendEvent(name: "contact1", value: "open")
         } else {
-        	log.debug "gpio_value_18: closed"
+        	log.debug "dogWindow: closed"
            sendEvent(name: "contact1", value: "closed")
+        }
+    }
+    if (result.containsKey("workoutWindow")) {
+    	log.debug "workoutWindow: ${result.workoutWindow.toDouble().round()}"
+        if (result.workoutWindow.contains("0")){
+        	log.debug "workoutWindow: open"
+            sendEvent(name: "contact2", value: "open")
+        } else {
+        	log.debug "workoutWindow: closed"
+           sendEvent(name: "contact2", value: "closed")
+        }
+    }
+    if (result.containsKey("foodStorageWindow")) {
+    	log.debug "foodStorageWindow: ${result.foodStorageWindow.toDouble().round()}"
+        if (result.foodStorageWindow.contains("0")){
+        	log.debug "foodStorageWindow: open"
+            sendEvent(name: "contact3", value: "open")
+        } else {
+        	log.debug "foodStorageWindow: closed"
+           sendEvent(name: "contact3", value: "closed")
+        }
+    }
+    if (result.containsKey("pingPongWindow")) {
+    	log.debug "pingPongWindow: ${result.pingPongWindow.toDouble().round()}"
+        if (result.pingPongWindow.contains("0")){
+        	log.debug "pingPongWindow: open"
+            sendEvent(name: "contact4", value: "open")
+        } else {
+        	log.debug "pingPongWindow: closed"
+           sendEvent(name: "contact4", value: "closed")
         }
     }
 }
